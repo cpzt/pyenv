@@ -10,7 +10,7 @@ test-unit: bats
 	PATH="./bats/bin:$$PATH" test/run
 	
 test-plugin: bats
-	cd plugins/python-build && $(PWD)/bats/bin/bats $${CI:+--tap} test
+	cd plugins/python-build && $(PWD)/bats/bin/bats --tap test
 
 PYTHON_BUILD_ROOT := $(CURDIR)/plugins/python-build
 PYTHON_BUILD_OPTS ?= --verbose
