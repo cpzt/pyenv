@@ -111,7 +111,7 @@ OUT
     cd "$INSTALL_ROOT"
 
     echo "INSTALL_ROOT: $INSTALL_ROOT"
-    echo "ls：$(ls ./ports/unix)"
+    echo "ls：$(ls $INSTALL_ROOT/ports/unix)"
 
     stub make true true '(for a in "$@"; do echo $a; done)|grep -E "^CFLAGS_EXTRA="' true
     stub ln true
@@ -120,7 +120,8 @@ OUT
 exec 4<&1
 CFLAGS_EXTRA='-Wno-floating-conversion' build_package_micropython
 DEF
-    assert_equal "abc" "$(ls ./ports/unix)"
+    result=$(ls $INSTALL_ROOT/ports/unix)
+    assert_equal "abc" $result
     assert_success
     assert_output <<OUT
 CFLAGS_EXTRA=-DMICROPY_PY_SYS_PATH_DEFAULT='".frozen:${TMP}/install/lib/micropython"' -Wno-floating-conversion
