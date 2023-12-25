@@ -120,7 +120,7 @@ OUT
 exec 4<&1
 CFLAGS_EXTRA='-Wno-floating-conversion' build_package_micropython
 DEF
-    assert_equal "abc" "$INSTALL_ROOT"
+    assert_equal "abc" "$(ls ./ports/unix)"
     assert_success
     assert_output <<OUT
 CFLAGS_EXTRA=-DMICROPY_PY_SYS_PATH_DEFAULT='".frozen:${TMP}/install/lib/micropython"' -Wno-floating-conversion
