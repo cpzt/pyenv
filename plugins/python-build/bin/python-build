@@ -934,8 +934,8 @@ build_package_micropython() {
   fi
   { cd mpy-cross
     "$MAKE" $MAKE_OPTS
-    [[ $package_name == micropython-1.9.* ]] && cd ../ports/unix
-    "$MAKE" $MAKE_OPTS axtls
+    cd ../ports/unix
+    [[ $package_name == micropython-1.9.* ]] && "$MAKE" $MAKE_OPTS axtls
     "$MAKE" $MAKE_OPTS CFLAGS_EXTRA="-DMICROPY_PY_SYS_PATH_DEFAULT='\".frozen:${PREFIX_PATH}/lib/micropython\"' $CFLAGS_EXTRA"
     "$MAKE" install $MAKE_INSTALL_OPTS PREFIX="${PREFIX_PATH}"
     ln -fs micropython "${PREFIX_PATH}/bin/python"
