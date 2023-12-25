@@ -942,6 +942,22 @@ build_package_micropython() {
   }>&4 2>&1
 }
 
+#build_package_micropython() {
+#  if [ "${MAKEOPTS+defined}" ]; then
+#    MAKE_OPTS="$MAKEOPTS"
+#  elif [ -z "${MAKE_OPTS+defined}" ]; then
+#    MAKE_OPTS="-j $(num_cpu_cores)"
+#  fi
+#  { cd mpy-cross
+#    "$MAKE" $MAKE_OPTS
+#    cd ../ports/unix
+#    "$MAKE" $MAKE_OPTS CFLAGS_EXTRA="-DMICROPY_PY_SYS_PATH_DEFAULT='\".frozen:${PREFIX_PATH}/lib/micropython\"' $CFLAGS_EXTRA"
+#    "$MAKE" install $MAKE_INSTALL_OPTS PREFIX="${PREFIX_PATH}"
+#    ln -fs micropython "${PREFIX_PATH}/bin/python"
+#    mkdir -p "${PREFIX_PATH}/lib/micropython"
+#  }>&4 2>&1
+#}
+
 pypy_architecture() {
   case "$(uname -s)" in
   "Darwin" )

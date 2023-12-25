@@ -110,6 +110,9 @@ OUT
     mkdir -p "$INSTALL_ROOT/bin"
     cd "$INSTALL_ROOT"
 
+    echo "INSTALL_ROOT: $INSTALL_ROOT"
+    echo "ls：$(ls ./ports/unix)"
+
     stub make true true '(for a in "$@"; do echo $a; done)|grep -E "^CFLAGS_EXTRA="' true
     stub ln true
     stub mkdir true
