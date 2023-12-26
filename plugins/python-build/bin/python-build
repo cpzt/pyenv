@@ -926,7 +926,13 @@ build_package_ironpython_builder() {
 }
 
 
-micropython_common_build() {
+build_package_micropython_1_9() {
+  # supported version 1.9.3 and 1.9.4
+  build_package_micropython "with_axtls"
+}
+
+build_package_micropython() {
+  # supported version 1.10 and higher
   if [ "${MAKEOPTS+defined}" ]; then
     MAKE_OPTS="$MAKEOPTS"
   elif [ -z "${MAKE_OPTS+defined}" ]; then
@@ -941,14 +947,6 @@ micropython_common_build() {
     ln -fs micropython "${PREFIX_PATH}/bin/python"
     mkdir -p "${PREFIX_PATH}/lib/micropython"
   }>&4 2>&1
-}
-
-build_package_micropython_1_9() {
-  micropython_common_build "with_axtls"
-}
-
-build_package_micropython() {
-  micropython_common_build
 }
 
 #build_package_micropython() {
