@@ -925,7 +925,8 @@ build_package_ironpython_builder() {
   ( cd "Stage/Release/IronPython-"* && build_package_ironpython )
 }
 
-build_package_micropython_1_9() {
+
+micropython_common_build() {
   if [ "${MAKEOPTS+defined}" ]; then
     MAKE_OPTS="$MAKEOPTS"
   elif [ -z "${MAKE_OPTS+defined}" ]; then
@@ -934,7 +935,7 @@ build_package_micropython_1_9() {
   { cd mpy-cross
     "$MAKE" $MAKE_OPTS
     cd ../ports/unix
-    "$MAKE" $MAKE_OPTS axtls
+    [ "$1" = "with_axtls" ] && "$MAKE" $MAKE_OPTS axtls
     "$MAKE" $MAKE_OPTS CFLAGS_EXTRA="-DMICROPY_PY_SYS_PATH_DEFAULT='\".frozen:${PREFIX_PATH}/lib/micropython\"' $CFLAGS_EXTRA"
     "$MAKE" install $MAKE_INSTALL_OPTS PREFIX="${PREFIX_PATH}"
     ln -fs micropython "${PREFIX_PATH}/bin/python"
@@ -942,21 +943,29 @@ build_package_micropython_1_9() {
   }>&4 2>&1
 }
 
-build_package_micropython() {
-  if [ "${MAKEOPTS+defined}" ]; then
-    MAKE_OPTS="$MAKEOPTS"
-  elif [ -z "${MAKE_OPTS+defined}" ]; then
-    MAKE_OPTS="-j $(num_cpu_cores)"
-  fi
-  { cd mpy-cross
-    "$MAKE" $MAKE_OPTS
-    cd ../ports/unix
-    "$MAKE" $MAKE_OPTS CFLAGS_EXTRA="-DMICROPY_PY_SYS_PATH_DEFAULT='\".frozen:${PREFIX_PATH}/lib/micropython\"' $CFLAGS_EXTRA"
-    "$MAKE" install $MAKE_INSTALL_OPTS PREFIX="${PREFIX_PATH}"
-    ln -fs micropython "${PREFIX_PATH}/bin/python"
-    mkdir -p "${PREFIX_PATH}/lib/micropython"
-  }>&4 2>&1
+build_package_micropython_1_9() {
+  micropython_common_build "with_axtls"
 }
+
+build_package_micropython() {
+  micropython_common_build
+}
+
+#build_package_micropython() {
+#  if [ "${MAKEOPTS+defined}" ]; then
+#    MAKE_OPTS="$MAKEOPTS"
+#  elif [ -z "${MAKE_OPTS+defined}" ]; then
+#    MAKE_OPTS="-j $(num_cpu_cores)"
+#  fi
+#  { cd mpy-cross
+#    "$MAKE" $MAKE_OPTS
+#    cd ../ports/unix
+#    "$MAKE" $MAKE_OPTS CFLAGS_EXTRA="-DMICROPY_PY_SYS_PATH_DEFAULT='\".frozen:${PREFIX_PATH}/lib/micropython\"' $CFLAGS_EXTRA"
+#    "$MAKE" install $MAKE_INSTALL_OPTS PREFIX="${PREFIX_PATH}"
+#    ln -fs micropython "${PREFIX_PATH}/bin/python"
+#    mkdir -p "${PREFIX_PATH}/lib/micropython"
+#  }>&4 2>&1
+#}
 
 pypy_architecture() {
   case "$(uname -s)" in
